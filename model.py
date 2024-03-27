@@ -302,13 +302,13 @@ class SingleAssetTradingEnvironment:
     axes[0].plot(self.store["running_capital"], label="Running Capital")
     axes[0].set_xlabel("Time Step")
     axes[0].set_ylabel("Capital")
-    axes[0].set_title("Running Capital and Portfolio Returns Over Time")
+    axes[0].set_title("Running Capital over Time")
     axes[0].legend()
 
     axes[1].plot(self.store["port_ret"], label="Portfolio Returns")
     axes[1].set_xlabel("Time Step")
     axes[1].set_ylabel("Returns")
-    axes[1].set_title("Portfolio Returns Over Time")
+    axes[1].set_title("Portfolio Returns over Time")
     axes[1].legend()
 
     # Plot candlestick chart
