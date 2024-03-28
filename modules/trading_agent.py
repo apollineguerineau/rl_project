@@ -9,18 +9,19 @@ import torch.nn as nn
 import torch.optim as optim
 
 from modules.q_network import Q_network
+from modules.memory import Memory
 
 class TradingAgent:
 
-    def __init__(self, state_size, num_actions, memory, qnet=Q_network, 
+    def __init__(self, state_size, num_actions, qnet=Q_network, 
                  batch_size = 64, learning_rate=1e-3,
                  tau = 2e-3, gamma=0.95, device='cpu',
-                 learning_freq=5) -> None:
+                 learning_freq=5, seed = 123) -> None:
         
         self.state_size = state_size
         self.num_actions = num_actions
 
-        self.memory = memory
+        self.memory = Memory(batch_size*2, seed=seed)
 
         self.batch_size = batch_size
         self.learning_rate = learning_rate
@@ -32,6 +33,7 @@ class TradingAgent:
         self.qnet_target = qnet(state_size, num_actions)
 
         self.device = device
+        self.seed = seed
         self.learning_freq = learning_freq
 
         self.step_count = 0
@@ -105,7 +107,7 @@ class TradingAgent:
         pred_Q_vals_target = rewards + (self.gamma * pred_Q_vals_next_target * (1 - dones))
 
         # compute loss + minimize it
-        loss = self.loss_fun(pred_Q_vals, pred_Q_vals_next_target)
+        loss = self.loss_fun(pred_Q_vals, pred_Q_vals_target)
 
         self.optimiser.zero_grad()
         loss.backward()

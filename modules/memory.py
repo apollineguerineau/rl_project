@@ -4,9 +4,10 @@ from collections import deque
 
 class Memory:
 
-    def __init__(self, max_size) -> None:
+    def __init__(self, max_size, seed=123) -> None:
         self.max_size = max_size
         self.content = deque(maxlen=max_size)
+        self.seed = seed
 
     def __len__(self):
         return len(self.content)
@@ -17,5 +18,6 @@ class Memory:
     
     def sample(self, n):
         """Randomly select n tuples from memory"""
+        random.seed(self.seed)
         sample = random.sample(self.content, n)
         return sample

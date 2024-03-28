@@ -26,16 +26,17 @@ class SingleAssetEnv:
 
         # BUY
         if act == 1:
-            reward = - self.data.iloc[self.t]['Close']
+            reward -= self.data.iloc[self.t]['Close']
+            self.profit -= reward
             self.positions.append(self.data.iloc[self.t]['Close'])
         
         # SELL
         elif act == 2:
             if len(self.positions) == 0:
-                reward = -1
+                reward = -100000
             else:
                 reward += self.data.iloc[self.t]['Close']*len(self.positions)
-                self.profit += reward - sum(self.positions)
+                self.profit += reward
                 self.positions = []
 
         # HOLD
@@ -51,12 +52,6 @@ class SingleAssetEnv:
 
         if (self.t==len(self.data)-1):
             self.done=True
-
-        # clipping reward
-        if reward > 0:
-            reward = 1
-        elif reward < 0:
-            reward = -1
 
         # set next time
         self.t += 1
