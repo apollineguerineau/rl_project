@@ -15,7 +15,7 @@ from modules.memory import Memory
 from modules.trading_agent import TradingAgent
 from modules.functions import train_agent, test_agent, test_agent_one_asset
 
-st.title(f"Test with test dataset (2023-05-01 to 2024-03-30)")
+st.title(f"Results on training dataset (2020-01-01 to 2023-05-01)")
 
 if "theme" not in st.session_state:
     st.session_state.theme = "light"
@@ -86,14 +86,14 @@ if os.path.exists(model_path) :
     # Set the loaded state dict to the Q network of the corresponding asset
     agent.qnets[agent.map_assets[asset_name_test]].load_state_dict(state_dict)
 
-    final_running_balance, profits = test_agent_one_asset(asset_name_test, agent, test_env)
+    final_running_balance, profits = test_agent_one_asset(asset_name_test, agent, train_env)
 
 else:  # TRAINING MODEL IN CASE IT IS NOT TRAINED YET
     print("Starting training")
 
     train_agent([asset_name_test], agent, [train_env], num_epochs)
 
-    final_running_balance, profits = test_agent_one_asset(asset_name_test, agent, test_env)
+    final_running_balance, profits = test_agent_one_asset(asset_name_test, agent, train_env)
     st.sidebar.success("Model trained successfully!")
 
 
@@ -112,7 +112,7 @@ st.write(f"Final balance for asset {asset_name_test} : {round(final_running_bala
 st.write(f"Final profit for asset:  {round(profits,2)}")
 st.write('\n')
 
-fig_test, candle_fig_test = test_env.render(asset_name_test)
+fig_test, candle_fig_test = train_env.render(asset_name_test)
 st.plotly_chart(candle_fig_test, use_container_width=True)
 st.write('\n\n')
 st.pyplot(fig_test)

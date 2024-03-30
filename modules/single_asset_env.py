@@ -41,6 +41,7 @@ class SingleAssetEnv:
             if self.balance >= self.data.iloc[self.t]['Close']:
                 self.balance -= self.data.iloc[self.t]['Close']
                 self.positions += 1
+                
             else:
                 reward = -100000
 
@@ -53,8 +54,8 @@ class SingleAssetEnv:
                 self.positions = 0
         
         elif act == 0: # Hold
-                reward -= 100
-
+                reward -= 1000
+        
         reward += ((self.data.iloc[self.t]['Close'])*self.positions + self.balance) - self.initial_balance
 
         # update history
