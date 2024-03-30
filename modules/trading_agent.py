@@ -15,9 +15,14 @@ class TradingAgent:
 
     def __init__(self, state_size, num_actions, assets,
                  qnet=Q_network, 
-                 batch_size = 64, learning_rate=1e-3,
-                 tau = 2e-3, gamma=0.95, device='cpu',
-                 learning_freq=5, seed = 123) -> None:
+                 batch_size = 64,
+                 memory_size = 128,
+                 learning_rate=1e-3,
+                 tau = 2e-3, 
+                 gamma=0.95, 
+                 learning_freq=5, 
+                 device='cpu',
+                 seed = 123) -> None:
         
         self.state_size = state_size
         self.num_actions = num_actions
@@ -33,7 +38,7 @@ class TradingAgent:
         self.qnets = [qnet(state_size, num_actions) for asset in assets]
         self.qnets_target = [qnet(state_size, num_actions) for asset in assets]
 
-        self.memory = [Memory(batch_size*2, seed=seed) for asset in assets]
+        self.memory = [Memory(memory_size, seed=seed) for asset in assets]
 
         self.device = device
         self.seed = seed

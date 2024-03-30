@@ -7,7 +7,7 @@ from plotly.graph_objs import *
 from plotly.offline import init_notebook_mode, iplot, iplot_mpl
 class DataLoader:
 
-    def __init__(self, start_date, freq, train_test_split, end_date) -> None:
+    def __init__(self, start_date, freq, train_test_split) -> None:
         """Constructor
 
         Parameters
@@ -22,7 +22,6 @@ class DataLoader:
         self.start_date = start_date
         self.freq = freq
         self.train_test_split = train_test_split
-        self.end_date = end_date
 
     def load(self, asset):
         """Loads data and splits into train and test
@@ -45,7 +44,7 @@ class DataLoader:
         
         # split train test
         train = data[:self.train_test_split]
-        test = data[self.train_test_split:self.end_date]
+        test = data[self.train_test_split:]
 
         return train, test
 
