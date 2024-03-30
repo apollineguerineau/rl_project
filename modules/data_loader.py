@@ -7,19 +7,22 @@ from plotly.graph_objs import *
 from plotly.offline import init_notebook_mode, iplot, iplot_mpl
 class DataLoader:
 
-    def __init__(self, start_date, freq, train_test_split) -> None:
+    def __init__(self, start_date, end_date, freq, train_test_split) -> None:
         """Constructor
 
         Parameters
         ----------
         start_date: str
             Date starting which data sould be downloaded
+        end_date: str
+            Date until which data should be downloaded
         freq: str
             Frequence at which data should be downloaded
         train_test_split: str
             Before is training data, after is test data
         """
         self.start_date = start_date
+        self.end_date = end_date
         self.freq = freq
         self.train_test_split = train_test_split
 
@@ -40,6 +43,7 @@ class DataLoader:
         # load data
         data = yf.download([asset], 
                            start=self.start_date,
+                           end=self.end_date,
                            interval=self.freq)
         
         # split train test
