@@ -69,7 +69,7 @@ class SingleAssetEnv:
         self.t += 1
         self.store["action_store"].append(act)
         self.store["reward_store"].append(reward)
-        self.store["running_capital"].append(self.balance)
+        self.store["running_capital"].append((self.data.iloc[self.t]['Close'])*self.positions + self.balance)
 
         return self.history, reward, self.done # obs, reward, done
 
